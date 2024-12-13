@@ -3,7 +3,8 @@
  */
 package za.co.sindi.ai.mistral.chat;
 
-import jakarta.json.bind.annotation.JsonbProperty;
+import java.io.Serializable;
+
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 
@@ -18,24 +19,18 @@ import jakarta.json.bind.annotation.JsonbTypeInfo;
 	    @JsonbSubtype(alias="system", type=ChatSystemMessage.class),
 	    @JsonbSubtype(alias="user", type=ChatUserMessage.class),
 	    @JsonbSubtype(alias="assistant", type=ChatAssistantMessage.class),
+	    @JsonbSubtype(alias="tool", type=ChatToolMessage.class),
 	}
 )
-public abstract class ChatMessage {
-
-	@JsonbProperty
-	private String content;
+public abstract class ChatMessage<T extends Serializable> implements Serializable {
 
 	/**
 	 * @return the content
 	 */
-	public String getContent() {
-		return content;
-	}
+	public abstract T getContent();
 
 	/**
 	 * @param content the content to set
 	 */
-	public void setContent(String content) {
-		this.content = content;
-	}
+	public abstract void setContent(T content);
 }

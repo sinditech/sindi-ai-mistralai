@@ -19,7 +19,7 @@ public class ChatCompletionRequest extends BaseRequest {
 //	private String model;
 	
 	@JsonbProperty
-	private List<ChatMessage> messages;
+	private List<ChatMessage<?>> messages;
 	
 	@JsonbProperty
 	private Double temperature;
@@ -33,11 +33,32 @@ public class ChatCompletionRequest extends BaseRequest {
 	@JsonbProperty
 	private Boolean stream;
 	
+	@JsonbProperty
+	private String[] stop;
+	
 	@JsonbProperty("safe_prompt")
 	private boolean safePrompt;
 	
 	@JsonbProperty("random_seed")
 	private Integer randomSeed;
+	
+	@JsonbProperty("response_format")
+	private ChatCompletionResponseFormat responseFormat;
+	
+	@JsonbProperty
+	private Tool[] tools;
+	
+	@JsonbProperty("tool_choice")
+	private Object toolChoice;
+	
+	@JsonbProperty("presence_penalty")
+	private Double presencePenalty;
+	
+	@JsonbProperty("frequency_penalty")
+	private Double frequencyPenalty;
+	
+	@JsonbProperty
+	private Integer n;
 
 //	/**
 //	 * @return the model
@@ -56,14 +77,14 @@ public class ChatCompletionRequest extends BaseRequest {
 	/**
 	 * @return the messages
 	 */
-	public List<ChatMessage> getMessages() {
+	public List<ChatMessage<?>> getMessages() {
 		return messages;
 	}
 
 	/**
 	 * @param messages the messages to set
 	 */
-	public void setMessages(List<ChatMessage> messages) {
+	public void setMessages(List<ChatMessage<?>> messages) {
 		this.messages = messages;
 	}
 
@@ -149,5 +170,110 @@ public class ChatCompletionRequest extends BaseRequest {
 	 */
 	public void setRandomSeed(Integer randomSeed) {
 		this.randomSeed = randomSeed;
+	}
+
+	/**
+	 * @return the stop
+	 */
+	public String[] getStop() {
+		return stop;
+	}
+
+	/**
+	 * @param stop the stop to set
+	 */
+	public void setStop(String[] stop) {
+		this.stop = stop;
+	}
+
+	/**
+	 * @return the responseFormat
+	 */
+	public ChatCompletionResponseFormat getResponseFormat() {
+		return responseFormat;
+	}
+
+	/**
+	 * @param responseFormat the responseFormat to set
+	 */
+	public void setResponseFormat(ChatCompletionResponseFormat responseFormat) {
+		this.responseFormat = responseFormat;
+	}
+
+	/**
+	 * @return the tools
+	 */
+	public Tool[] getTools() {
+		return tools;
+	}
+
+	/**
+	 * @param tools the tools to set
+	 */
+	public void setTools(Tool[] tools) {
+		this.tools = tools;
+	}
+
+	/**
+	 * @return the toolChoice
+	 */
+	public Object getToolChoice() {
+		return toolChoice;
+	}
+
+	/**
+	 * @param toolChoice the toolChoice to set
+	 */
+	public void setToolChoice(ToolChoice toolChoice) {
+		this.toolChoice = toolChoice;
+	}
+	
+	/**
+	 * @param toolChoice the toolChoice to set
+	 */
+	public void setToolChoice(ToolChoiceEnum toolChoice) {
+		this.toolChoice = toolChoice;
+	}
+
+	/**
+	 * @return the presencePenalty
+	 */
+	public Double getPresencePenalty() {
+		return presencePenalty;
+	}
+
+	/**
+	 * @param presencePenalty the presencePenalty to set
+	 */
+	public void setPresencePenalty(Double presencePenalty) {
+		this.presencePenalty = presencePenalty;
+	}
+
+	/**
+	 * @return the frequencyPenalty
+	 */
+	public Double getFrequencyPenalty() {
+		return frequencyPenalty;
+	}
+
+	/**
+	 * @param frequencyPenalty the frequencyPenalty to set
+	 */
+	public void setFrequencyPenalty(Double frequencyPenalty) {
+		this.frequencyPenalty = frequencyPenalty;
+	}
+
+	/**
+	 * @return the n
+	 */
+	public Integer getN() {
+		return n;
+	}
+
+	/**
+	 * @param n the n to set
+	 */
+	public void setN(Integer n) {
+		this.n = n;
 	}
 }
