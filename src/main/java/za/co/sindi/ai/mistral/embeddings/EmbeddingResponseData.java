@@ -12,7 +12,7 @@ import jakarta.json.bind.annotation.JsonbProperty;
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class Embedding implements Serializable {
+public class EmbeddingResponseData implements Serializable {
 
 	@JsonbProperty
 	private int index;

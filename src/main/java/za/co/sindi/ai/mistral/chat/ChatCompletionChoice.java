@@ -12,13 +12,13 @@ import jakarta.json.bind.annotation.JsonbProperty;
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class Choice implements Serializable {
+public class ChatCompletionChoice implements Serializable {
 
 	@JsonbProperty
 	private int index;
 	
 	@JsonbProperty
-	private ChatMessage message;
+	private Message message;
 	
 	@JsonbProperty("finish_reason")
 	private FinishReason finishReason;
@@ -40,14 +40,14 @@ public class Choice implements Serializable {
 	/**
 	 * @return the message
 	 */
-	public ChatMessage getMessage() {
+	public Message getMessage() {
 		return message;
 	}
 
 	/**
 	 * @param message the message to set
 	 */
-	public void setMessage(ChatMessage message) {
+	public void setMessage(Message message) {
 		this.message = message;
 	}
 

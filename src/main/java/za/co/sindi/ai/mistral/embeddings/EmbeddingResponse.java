@@ -6,6 +6,7 @@ package za.co.sindi.ai.mistral.embeddings;
 import java.io.Serializable;
 
 import jakarta.json.bind.annotation.JsonbProperty;
+import za.co.sindi.ai.mistral.models.UsageInfo;
 
 /**
  * @author Buhake Sindi
@@ -24,10 +25,10 @@ public class EmbeddingResponse implements Serializable {
 	private String model;
 	
 	@JsonbProperty
-	private Embedding[] data;
+	private EmbeddingResponseData[] data;
 	
 	@JsonbProperty
-	private Usage usage;
+	private UsageInfo usage;
 
 	/**
 	 * @return the id
@@ -60,14 +61,14 @@ public class EmbeddingResponse implements Serializable {
 	/**
 	 * @return the data
 	 */
-	public Embedding[] getData() {
+	public EmbeddingResponseData[] getData() {
 		return data;
 	}
 
 	/**
 	 * @param data the data to set
 	 */
-	public void setData(Embedding[] data) {
+	public void setData(EmbeddingResponseData[] data) {
 		this.data = data;
 	}
 
@@ -88,14 +89,14 @@ public class EmbeddingResponse implements Serializable {
 	/**
 	 * @return the usage
 	 */
-	public Usage getUsage() {
+	public UsageInfo getUsage() {
 		return usage;
 	}
 
 	/**
 	 * @param usage the usage to set
 	 */
-	public void setUsage(Usage usage) {
+	public void setUsage(UsageInfo usage) {
 		this.usage = usage;
 	}	
 }

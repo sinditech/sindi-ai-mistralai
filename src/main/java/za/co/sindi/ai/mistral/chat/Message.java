@@ -16,13 +16,13 @@ import jakarta.json.bind.annotation.JsonbTypeInfo;
 @JsonbTypeInfo(
 	key = "role",
 	value = {
-	    @JsonbSubtype(alias="system", type=ChatSystemMessage.class),
-	    @JsonbSubtype(alias="user", type=ChatUserMessage.class),
-	    @JsonbSubtype(alias="assistant", type=ChatAssistantMessage.class),
-	    @JsonbSubtype(alias="tool", type=ChatToolMessage.class),
+	    @JsonbSubtype(alias="system", type=SystemMessage.class),
+	    @JsonbSubtype(alias="user", type=UserMessage.class),
+	    @JsonbSubtype(alias="assistant", type=AssistantMessage.class),
+	    @JsonbSubtype(alias="tool", type=ToolMessage.class),
 	}
 )
-public abstract class ChatMessage<T extends Serializable> implements Serializable {
+public abstract class Message<T extends Serializable> implements Serializable {
 
 	/**
 	 * @return the content

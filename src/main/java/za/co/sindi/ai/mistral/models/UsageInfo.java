@@ -1,7 +1,7 @@
 /**
  * 
  */
-package za.co.sindi.ai.mistral.embeddings;
+package za.co.sindi.ai.mistral.models;
 
 import java.io.Serializable;
 
@@ -12,10 +12,13 @@ import jakarta.json.bind.annotation.JsonbProperty;
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class Usage implements Serializable {
+public class UsageInfo implements Serializable {
 
 	@JsonbProperty("prompt_tokens")
 	private int promptTokens;
+	
+	@JsonbProperty("completion_tokens")
+	private int completionTokens;
 	
 	@JsonbProperty("total_tokens")
 	private int totalTokens;
@@ -32,6 +35,20 @@ public class Usage implements Serializable {
 	 */
 	public void setPromptTokens(int promptTokens) {
 		this.promptTokens = promptTokens;
+	}
+
+	/**
+	 * @return the completionTokens
+	 */
+	public int getCompletionTokens() {
+		return completionTokens;
+	}
+
+	/**
+	 * @param completionTokens the completionTokens to set
+	 */
+	public void setCompletionTokens(int completionTokens) {
+		this.completionTokens = completionTokens;
 	}
 
 	/**

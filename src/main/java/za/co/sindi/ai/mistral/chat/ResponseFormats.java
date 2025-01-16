@@ -8,7 +8,7 @@ package za.co.sindi.ai.mistral.chat;
  * @since 23 January 2024
  * @see <a href="https://docs.mistral.ai/api/#tag/chat/operation/chat_completion_v1_chat_completions_post">Mistral AI Chat Completion documentation.</a>
  */
-public enum ChatResponseFormat {
+public enum ResponseFormats {
 	TEXT("text")
 	,JSON_OBJECT("json_object")
 	;
@@ -17,12 +17,12 @@ public enum ChatResponseFormat {
 	/**
 	 * @param format
 	 */
-	private ChatResponseFormat(String format) {
+	private ResponseFormats(String format) {
 		this.format = format;
 	}
 	
-	public static ChatResponseFormat of(final String value) {
-		for (ChatResponseFormat format : values()) {
+	public static ResponseFormats of(final String value) {
+		for (ResponseFormats format : values()) {
 			if (format.format.equals(value)) return format;
 		}
 		

@@ -1,11 +1,12 @@
 /**
  * 
  */
-package za.co.sindi.ai.mistral.chat;
+package za.co.sindi.ai.mistral.fim;
 
 import java.io.Serializable;
 
 import jakarta.json.bind.annotation.JsonbProperty;
+import za.co.sindi.ai.mistral.chat.ChatCompletionChoice;
 import za.co.sindi.ai.mistral.models.UsageInfo;
 
 /**
@@ -13,7 +14,7 @@ import za.co.sindi.ai.mistral.models.UsageInfo;
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class ChatCompletionResponse implements Serializable {
+public class FimCompletionResponse implements Serializable {
 
 	@JsonbProperty
 	private String id;

@@ -13,14 +13,20 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Stream;
 
 import za.co.sindi.ai.mistral.JSONObjectTransformer;
 import za.co.sindi.ai.mistral.MistralAIException;
 import za.co.sindi.ai.mistral.ObjectTransformer;
 import za.co.sindi.ai.mistral.error.ErrorResponse;
+import za.co.sindi.commons.net.sse.Event;
+import za.co.sindi.commons.net.sse.MessageEvent;
 import za.co.sindi.commons.utils.Strings;
 
 /**
@@ -123,15 +129,30 @@ public class APIClientImpl implements APIClient {
 	private void validateHttpResponse(final HttpResponse<String> httpResponse) {
 		int code = httpResponse.statusCode() / 100;
 		if (code == 4 || code == 5) {
+			String content = httpResponse.body();
 			String contentType = httpResponse.headers().firstValue("content-type").orElse(null);
 			if (!Strings.isNullOrEmpty(contentType) && contentType.startsWith("application/json")) {
-				ErrorResponse errorResponse = objectTransformer.transform(httpResponse.body(), ErrorResponse.class);
+				ErrorResponse errorResponse = objectTransformer.transform(content, ErrorResponse.class);
 				if (errorResponse.getError() != null) {
 					throw new MistralAIException(errorResponse.getError());
 				} else {
-					throw new MistralAIException(objectTransformer.transform(httpResponse.body(), za.co.sindi.ai.mistral.error.Error.class));
+					throw new MistralAIException(objectTransformer.transform(content, za.co.sindi.ai.mistral.error.Error.class));
 				}
-			} else throw new MistralAIException(httpResponse.body());
+			} else throw new MistralAIException(content);
 		}
+	}
+	
+	private <R> Stream<R> handleStream(final Stream<Event> events, Class<R> entityClassType) {
+		List<R> result = new ArrayList<>();
+		events.forEach(event -> {
+			if (event instanceof MessageEvent message) {
+				String content = message.getData();
+				if (!"[DONE]".equals(content)) {
+					result.add(objectTransformer.transform(content, entityClassType));
+				}
+			}
+		});
+		
+		return Collections.unmodifiableList(result).stream();
 	}
 }

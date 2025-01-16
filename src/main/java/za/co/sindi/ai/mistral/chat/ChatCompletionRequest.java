@@ -19,7 +19,7 @@ public class ChatCompletionRequest extends BaseRequest {
 //	private String model;
 	
 	@JsonbProperty
-	private List<ChatMessage<?>> messages;
+	private List<Message<?>> messages;
 	
 	@JsonbProperty
 	private Double temperature;
@@ -43,7 +43,7 @@ public class ChatCompletionRequest extends BaseRequest {
 	private Integer randomSeed;
 	
 	@JsonbProperty("response_format")
-	private ChatCompletionResponseFormat responseFormat;
+	private ResponseFormat responseFormat;
 	
 	@JsonbProperty
 	private Tool[] tools;
@@ -77,14 +77,14 @@ public class ChatCompletionRequest extends BaseRequest {
 	/**
 	 * @return the messages
 	 */
-	public List<ChatMessage<?>> getMessages() {
+	public List<Message<?>> getMessages() {
 		return messages;
 	}
 
 	/**
 	 * @param messages the messages to set
 	 */
-	public void setMessages(List<ChatMessage<?>> messages) {
+	public void setMessages(List<Message<?>> messages) {
 		this.messages = messages;
 	}
 
@@ -189,14 +189,14 @@ public class ChatCompletionRequest extends BaseRequest {
 	/**
 	 * @return the responseFormat
 	 */
-	public ChatCompletionResponseFormat getResponseFormat() {
+	public ResponseFormat getResponseFormat() {
 		return responseFormat;
 	}
 
 	/**
 	 * @param responseFormat the responseFormat to set
 	 */
-	public void setResponseFormat(ChatCompletionResponseFormat responseFormat) {
+	public void setResponseFormat(ResponseFormat responseFormat) {
 		this.responseFormat = responseFormat;
 	}
 

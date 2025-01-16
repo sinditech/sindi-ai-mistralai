@@ -10,6 +10,6 @@ import java.io.Serializable;
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public abstract class ChatSystemMessage<T extends Serializable> extends ChatMessage<T> {
+public abstract class UserMessage<T extends Serializable> extends Message<T> {
 
 }

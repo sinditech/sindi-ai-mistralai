@@ -14,15 +14,15 @@ import jakarta.json.bind.annotation.JsonbProperty;
  * @since 23 January 2024
  * @see <a href="https://docs.mistral.ai/api/#tag/chat/operation/chat_completion_v1_chat_completions_post">Mistral AI Chat Completion documentation.</a>
  */
-public class ChatCompletionResponseFormat implements Serializable {
+public class ResponseFormat implements Serializable {
 
 	@JsonbProperty
-	private ChatResponseFormat type;
+	private ResponseFormats type;
 	
 	/**
 	 * 
 	 */
-	public ChatCompletionResponseFormat() {
+	public ResponseFormat() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -30,14 +30,14 @@ public class ChatCompletionResponseFormat implements Serializable {
 	/**
 	 * @return the type
 	 */
-	public ChatResponseFormat getType() {
+	public ResponseFormats getType() {
 		return type;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(ChatResponseFormat type) {
+	public void setType(ResponseFormats type) {
 		this.type = type;
 	}
 }

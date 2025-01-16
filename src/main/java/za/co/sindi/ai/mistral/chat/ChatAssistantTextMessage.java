@@ -10,7 +10,7 @@ import jakarta.json.bind.annotation.JsonbProperty;
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class ChatAssistantTextMessage extends ChatAssistantMessage<String> {
+public class ChatAssistantTextMessage extends AssistantMessage<String> {
 
 	@JsonbProperty
 	private String content;

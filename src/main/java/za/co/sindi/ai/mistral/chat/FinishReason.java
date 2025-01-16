@@ -11,7 +11,9 @@ package za.co.sindi.ai.mistral.chat;
 public enum FinishReason {
 	STOP("stop"),
 	LENGTH("length"),
-	MODEL_LENGTH("model_length")
+	MODEL_LENGTH("model_length"),
+	ERROR("error"),
+	TOOL_CALLS("tool_calls")
 	;
 	private final String value;
 

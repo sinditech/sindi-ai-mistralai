@@ -18,7 +18,13 @@ import za.co.sindi.ai.mistral.client.APIRequest;
 import za.co.sindi.ai.mistral.client.ResponseHandler;
 import za.co.sindi.ai.mistral.embeddings.EmbeddingRequest;
 import za.co.sindi.ai.mistral.embeddings.EmbeddingResponse;
+import za.co.sindi.ai.mistral.fim.FimCompletionRequest;
+import za.co.sindi.ai.mistral.fim.FimCompletionResponse;
+import za.co.sindi.ai.mistral.model.ArchivedFineTunedModel;
+import za.co.sindi.ai.mistral.model.DeletedFineTunedModel;
+import za.co.sindi.ai.mistral.model.Model;
 import za.co.sindi.ai.mistral.model.ModelList;
+import za.co.sindi.ai.mistral.model.UpdateFineTunedModelRequest;
 import za.co.sindi.commons.io.UncheckedException;
 
 /**
@@ -105,6 +111,52 @@ public class MistralAIImpl implements MistralAI {
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#createFimCompletion(za.co.sindi.ai.mistral.fim.FimCompletionRequest)
+	 */
+	@Override
+	public FimCompletionResponse createFimCompletion(FimCompletionRequest request) {
+		// TODO Auto-generated method stub
+		APIRequest<FimCompletionRequest> apiRequest = new APIRequest<>("POST", BASE_URL + "/fim/completions", "application/json");
+		apiRequest.setContent(request);
+		apiRequest.setContentCharset(StandardCharsets.UTF_8);
+		try {
+			return apiClient.send(apiRequest, new ResponseHandler<FimCompletionResponse>() {
+
+				@Override
+				public FimCompletionResponse handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), FimCompletionResponse.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#createFimCompletionAsync(za.co.sindi.ai.mistral.fim.FimCompletionRequest)
+	 */
+	@Override
+	public CompletableFuture<FimCompletionResponse> createFimCompletionAsync(FimCompletionRequest request) {
+		// TODO Auto-generated method stub
+		APIRequest<FimCompletionRequest> apiRequest = new APIRequest<>("POST", BASE_URL + "/fim/completions", "application/json");
+		apiRequest.setContent(request);
+		apiRequest.setContentCharset(StandardCharsets.UTF_8);
+		return apiClient.sendAsync(apiRequest, new ResponseHandler<FimCompletionResponse>() {
+
+			@Override
+			public FimCompletionResponse handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), FimCompletionResponse.class);
+			}
+		});
+	}
+
 	@Override
 	public EmbeddingResponse createEmbedding(EmbeddingRequest request) {
 		// TODO Auto-generated method stub
@@ -130,7 +182,7 @@ public class MistralAIImpl implements MistralAI {
 	}
 
 	@Override
-	public CompletableFuture<EmbeddingResponse> createEmbeddingAsyn(EmbeddingRequest request) {
+	public CompletableFuture<EmbeddingResponse> createEmbeddingAsync(EmbeddingRequest request) {
 		// TODO Auto-generated method stub
 		APIRequest<EmbeddingRequest> apiRequest = new APIRequest<>("POST", BASE_URL + "/embeddings", "application/json");
 		apiRequest.setContent(request);
@@ -175,6 +227,212 @@ public class MistralAIImpl implements MistralAI {
 			public ModelList handleResponse(HttpResponse<String> httpResponse) {
 				// TODO Auto-generated method stub
 				return objectTransformer.transform(httpResponse.body(), ModelList.class);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#retrieveModel(java.lang.String)
+	 */
+	@Override
+	public Model retrieveModel(String modelId) {
+		// TODO Auto-generated method stub
+		try {
+			return apiClient.send(new APIRequest<>("GET", BASE_URL + "/models/" + modelId), new ResponseHandler<Model>() {
+
+				@Override
+				public Model handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), Model.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#retrieveModelAsync(java.lang.String)
+	 */
+	@Override
+	public CompletableFuture<Model> retrieveModelAsync(String modelId) {
+		// TODO Auto-generated method stub
+		return apiClient.sendAsync(new APIRequest<>("GET", BASE_URL + "/models/" + modelId), new ResponseHandler<Model>() {
+
+			@Override
+			public Model handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), Model.class);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#deleteModel(java.lang.String)
+	 */
+	@Override
+	public DeletedFineTunedModel deleteModel(String modelId) {
+		// TODO Auto-generated method stub
+		try {
+			return apiClient.send(new APIRequest<>("DELETE", BASE_URL + "/models/" + modelId), new ResponseHandler<DeletedFineTunedModel>() {
+
+				@Override
+				public DeletedFineTunedModel handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), DeletedFineTunedModel.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#deleteModelAsync(java.lang.String)
+	 */
+	@Override
+	public CompletableFuture<DeletedFineTunedModel> deleteModelAsync(String modelId) {
+		// TODO Auto-generated method stub
+		return apiClient.sendAsync(new APIRequest<>("DELETE", BASE_URL + "/models/" + modelId), new ResponseHandler<DeletedFineTunedModel>() {
+
+			@Override
+			public DeletedFineTunedModel handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), DeletedFineTunedModel.class);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#updateFineTunedModel(java.lang.String, za.co.sindi.ai.mistral.model.UpdateFineTunedModelRequest)
+	 */
+	@Override
+	public Model updateFineTunedModel(String modelId, UpdateFineTunedModelRequest request) {
+		// TODO Auto-generated method stub
+		APIRequest<UpdateFineTunedModelRequest> apiRequest = new APIRequest<>("PATCH", BASE_URL + "/fine_tuning/models/" + modelId, "application/json");
+		apiRequest.setContent(request);
+		apiRequest.setContentCharset(StandardCharsets.UTF_8);
+		try {
+			return apiClient.send(apiRequest, new ResponseHandler<Model>() {
+
+				@Override
+				public Model handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), Model.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#updateFineTunedModelAsync(java.lang.String, za.co.sindi.ai.mistral.model.UpdateFineTunedModelRequest)
+	 */
+	@Override
+	public CompletableFuture<Model> updateFineTunedModelAsync(String modelId, UpdateFineTunedModelRequest request) {
+		// TODO Auto-generated method stub
+		APIRequest<UpdateFineTunedModelRequest> apiRequest = new APIRequest<>("PATCH", BASE_URL + "/fine_tuning/models/" + modelId, "application/json");
+		apiRequest.setContent(request);
+		apiRequest.setContentCharset(StandardCharsets.UTF_8);
+		return apiClient.sendAsync(apiRequest, new ResponseHandler<Model>() {
+
+			@Override
+			public Model handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), Model.class);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#archiveFineTunedModel(java.lang.String)
+	 */
+	@Override
+	public ArchivedFineTunedModel archiveFineTunedModel(String modelId) {
+		// TODO Auto-generated method stub
+		try {
+			return apiClient.send(new APIRequest<>("POST", BASE_URL + "/fine_tuning/models/" + modelId + "/archive"), new ResponseHandler<ArchivedFineTunedModel>() {
+
+				@Override
+				public ArchivedFineTunedModel handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), ArchivedFineTunedModel.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#archiveFineTunedModelAsync(java.lang.String)
+	 */
+	@Override
+	public CompletableFuture<ArchivedFineTunedModel> archiveFineTunedModelAsync(String modelId) {
+		// TODO Auto-generated method stub
+		return apiClient.sendAsync(new APIRequest<>("POST", BASE_URL + "/fine_tuning/models/" + modelId + "/archive"), new ResponseHandler<ArchivedFineTunedModel>() {
+
+			@Override
+			public ArchivedFineTunedModel handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), ArchivedFineTunedModel.class);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#unarchiveFineTunedModel(java.lang.String)
+	 */
+	@Override
+	public ArchivedFineTunedModel unarchiveFineTunedModel(String modelId) {
+		// TODO Auto-generated method stub
+		try {
+			return apiClient.send(new APIRequest<>("DELETE", BASE_URL + "/fine_tuning/models/" + modelId + "/archive"), new ResponseHandler<ArchivedFineTunedModel>() {
+
+				@Override
+				public ArchivedFineTunedModel handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), ArchivedFineTunedModel.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#unarchiveFineTunedModelAsync(java.lang.String)
+	 */
+	@Override
+	public CompletableFuture<ArchivedFineTunedModel> unarchiveFineTunedModelAsync(String modelId) {
+		// TODO Auto-generated method stub
+		return apiClient.sendAsync(new APIRequest<>("DELETE", BASE_URL + "/fine_tuning/models/" + modelId + "/archive"), new ResponseHandler<ArchivedFineTunedModel>() {
+
+			@Override
+			public ArchivedFineTunedModel handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), ArchivedFineTunedModel.class);
 			}
 		});
 	}
