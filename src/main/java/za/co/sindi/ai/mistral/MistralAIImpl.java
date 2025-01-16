@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import za.co.sindi.ai.mistral.agents.AgentsCompletionRequest;
+import za.co.sindi.ai.mistral.agents.AgentsCompletionResponse;
 import za.co.sindi.ai.mistral.chat.ChatCompletionRequest;
 import za.co.sindi.ai.mistral.chat.ChatCompletionResponse;
 import za.co.sindi.ai.mistral.client.APIClient;
@@ -107,6 +109,52 @@ public class MistralAIImpl implements MistralAI {
 			public ChatCompletionResponse handleResponse(HttpResponse<String> httpResponse) {
 				// TODO Auto-generated method stub
 				return objectTransformer.transform(httpResponse.body(), ChatCompletionResponse.class);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#createChatCompletion(za.co.sindi.ai.mistral.agents.AgentsCompletionRequest)
+	 */
+	@Override
+	public AgentsCompletionResponse createAgentsCompletion(AgentsCompletionRequest request) {
+		// TODO Auto-generated method stub
+		APIRequest<AgentsCompletionRequest> apiRequest = new APIRequest<>("POST", BASE_URL + "/agents/completions", "application/json");
+		apiRequest.setContent(request);
+		apiRequest.setContentCharset(StandardCharsets.UTF_8);
+		try {
+			return apiClient.send(apiRequest, new ResponseHandler<AgentsCompletionResponse>() {
+
+				@Override
+				public AgentsCompletionResponse handleResponse(HttpResponse<String> httpResponse) {
+					// TODO Auto-generated method stub
+					return objectTransformer.transform(httpResponse.body(), AgentsCompletionResponse.class);
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedIOException(e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see za.co.sindi.ai.mistral.MistralAI#createChatCompletionAsync(za.co.sindi.ai.mistral.agents.AgentsCompletionRequest)
+	 */
+	@Override
+	public CompletableFuture<AgentsCompletionResponse> createAgentsCompletionAsync(AgentsCompletionRequest request) {
+		// TODO Auto-generated method stub
+		APIRequest<AgentsCompletionRequest> apiRequest = new APIRequest<>("POST", BASE_URL + "/agents/completions", "application/json");
+		apiRequest.setContent(request);
+		apiRequest.setContentCharset(StandardCharsets.UTF_8);
+		return apiClient.sendAsync(apiRequest, new ResponseHandler<AgentsCompletionResponse>() {
+
+			@Override
+			public AgentsCompletionResponse handleResponse(HttpResponse<String> httpResponse) {
+				// TODO Auto-generated method stub
+				return objectTransformer.transform(httpResponse.body(), AgentsCompletionResponse.class);
 			}
 		});
 	}

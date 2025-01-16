@@ -8,6 +8,7 @@ import java.net.ProxySelector;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Stream;
 
 import za.co.sindi.ai.mistral.ObjectTransformer;
 
@@ -36,4 +37,6 @@ public interface APIClient {
 	
 	public <REQ, T> T send(final APIRequest<REQ> request, final ResponseHandler<T> responseHandler) throws IOException, InterruptedException;
 	public <REQ, T> CompletableFuture<T> sendAsync(final APIRequest<REQ> request, final ResponseHandler<T> responseHandler);
+	public <REQ, T> Stream<T> sendStreaming(APIRequest<REQ> request, Class<T> chunkClass) throws IOException, InterruptedException;
+	public <REQ, T> CompletableFuture<Stream<T>> sendStreamingAsync(APIRequest<REQ> request, Class<T> chunkClass);
 }

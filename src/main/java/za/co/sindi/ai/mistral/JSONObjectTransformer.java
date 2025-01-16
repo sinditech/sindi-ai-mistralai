@@ -16,7 +16,7 @@ public class JSONObjectTransformer implements ObjectTransformer {
 
 	private JsonbConfig newJsonbConfig() {
 		JsonbConfig config = new JsonbConfig();
-		config.withAdapters(new FinishReasonAdapter(), new ToolChoiceEnumAdapter(), new ResponseFormatsAdapter());
+		config.withAdapters(new FinishReasonAdapter(), new ToolChoiceEnumAdapter(), new ResponseFormatsAdapter(), new EncodingFormatAdapter());
 		return config;
 	}
 	

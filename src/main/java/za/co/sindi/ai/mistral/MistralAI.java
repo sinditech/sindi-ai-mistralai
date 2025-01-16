@@ -5,6 +5,8 @@ package za.co.sindi.ai.mistral;
 
 import java.util.concurrent.CompletableFuture;
 
+import za.co.sindi.ai.mistral.agents.AgentsCompletionRequest;
+import za.co.sindi.ai.mistral.agents.AgentsCompletionResponse;
 import za.co.sindi.ai.mistral.chat.ChatCompletionRequest;
 import za.co.sindi.ai.mistral.chat.ChatCompletionResponse;
 import za.co.sindi.ai.mistral.embeddings.EmbeddingRequest;
@@ -38,6 +40,22 @@ public interface MistralAI {
 	 * @return a {@link CompletableFuture} of {@link ChatCompletionResponse}
 	 */
 	public CompletableFuture<ChatCompletionResponse> createChatCompletionAsync(final ChatCompletionRequest request);
+	
+	/**
+	 * Create Agents Completions
+	 * 
+	 * @param request an {@link AgentsCompletionRequest}
+	 * @return an instance of {@link ChatCompletionResponse}
+	 */
+	public AgentsCompletionResponse createAgentsCompletion(final AgentsCompletionRequest request);
+	
+	/**
+	 * Create Agents Completions
+	 * 
+	 * @param request an {@link AgentsCompletionRequest}
+	 * @return a {@link CompletableFuture} of {@link ChatCompletionResponse}
+	 */
+	public CompletableFuture<AgentsCompletionResponse> createAgentsCompletionAsync(final AgentsCompletionRequest request);
 	
 	/**
 	 * Create FIM Completions

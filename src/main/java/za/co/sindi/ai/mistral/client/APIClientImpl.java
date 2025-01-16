@@ -25,8 +25,12 @@ import za.co.sindi.ai.mistral.JSONObjectTransformer;
 import za.co.sindi.ai.mistral.MistralAIException;
 import za.co.sindi.ai.mistral.ObjectTransformer;
 import za.co.sindi.ai.mistral.error.ErrorResponse;
+import za.co.sindi.commons.net.http.WithErrorBodyHandler;
+import za.co.sindi.commons.net.sse.AllEventSubscriber;
 import za.co.sindi.commons.net.sse.Event;
 import za.co.sindi.commons.net.sse.MessageEvent;
+import za.co.sindi.commons.net.sse.SSEEventProcessor;
+import za.co.sindi.commons.util.Either;
 import za.co.sindi.commons.utils.Strings;
 
 /**
@@ -95,6 +99,34 @@ public class APIClientImpl implements APIClient {
 		}).toCompletableFuture();
 	}
 	
+	@Override
+	public <REQ, T> Stream<T> sendStreaming(APIRequest<REQ> request, Class<T> chunkClass) throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
+		SSEEventProcessor processor = new SSEEventProcessor();
+		AllEventSubscriber subscriber = new AllEventSubscriber();
+		processor.subscribe(subscriber);
+		HttpRequest httpRequest = createHttpRequestBuilder(request).build();
+		HttpClient httpClient = createHttpClient();
+		HttpResponse<Either<Void,String>> httpResponse = httpClient.send(httpRequest, new WithErrorBodyHandler<Void>(BodyHandlers.fromLineSubscriber(processor)));
+		validateHttpResponse(httpResponse);
+		return handleStream(subscriber.getEventStream(), chunkClass);
+	}
+	
+	@Override
+	public <REQ, T> CompletableFuture<Stream<T>> sendStreamingAsync(APIRequest<REQ> request, Class<T> chunkClass) {
+		// TODO Auto-generated method stub
+		SSEEventProcessor processor = new SSEEventProcessor();
+		AllEventSubscriber subscriber = new AllEventSubscriber();
+		processor.subscribe(subscriber);
+		HttpRequest httpRequest = createHttpRequestBuilder(request).build();
+		HttpClient httpClient = createHttpClient();
+		CompletableFuture<HttpResponse<Either<Void, String>>> httpResponseFuture = httpClient.sendAsync(httpRequest, new WithErrorBodyHandler<Void>(BodyHandlers.fromLineSubscriber(processor)));
+		return httpResponseFuture.thenApplyAsync(httpResponse -> { 
+			validateHttpResponse(httpResponse);
+			return handleStream(subscriber.getEventStream(), chunkClass);
+		}).toCompletableFuture();
+	}
+
 	private <REQ> HttpRequest.Builder createHttpRequestBuilder(final APIRequest<REQ> request) {
 		final BodyPublisher bodyPublisher = request.getContent() == null ? BodyPublishers.noBody() : BodyPublishers.ofString(objectTransformer.transform(request.getContent()), request.getContentCharset());
 		HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder(URI.create(request.getUri()))
@@ -126,10 +158,16 @@ public class APIClientImpl implements APIClient {
 		return httpClientBuilder.build();
 	}
 	
-	private void validateHttpResponse(final HttpResponse<String> httpResponse) {
+	@SuppressWarnings("unchecked")
+	private void validateHttpResponse(final HttpResponse<?> httpResponse) {
 		int code = httpResponse.statusCode() / 100;
 		if (code == 4 || code == 5) {
-			String content = httpResponse.body();
+			Object body = httpResponse.body();
+			String content = null;
+			if (body != null) {
+				if (body instanceof String s) content = s;
+				else if (body instanceof Either either) content = ((Either<Void, String>) either).getRight();
+			}
 			String contentType = httpResponse.headers().firstValue("content-type").orElse(null);
 			if (!Strings.isNullOrEmpty(contentType) && contentType.startsWith("application/json")) {
 				ErrorResponse errorResponse = objectTransformer.transform(content, ErrorResponse.class);

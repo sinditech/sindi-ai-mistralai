@@ -20,7 +20,7 @@ public class EmbeddingRequest extends BaseRequest {
 	private String[] inputs;
 	
 	@JsonbProperty("encoding_format")
-	private String encodingFormat;
+	private EncodingFormat encodingFormat;
 
 //	/**
 //	 * @return the model
@@ -53,14 +53,14 @@ public class EmbeddingRequest extends BaseRequest {
 	/**
 	 * @return the encodingFormat
 	 */
-	public String getEncodingFormat() {
+	public EncodingFormat getEncodingFormat() {
 		return encodingFormat;
 	}
 
 	/**
 	 * @param encodingFormat the encodingFormat to set
 	 */
-	public void setEncodingFormat(String encodingFormat) {
+	public void setEncodingFormat(EncodingFormat encodingFormat) {
 		this.encodingFormat = encodingFormat;
 	}
 }

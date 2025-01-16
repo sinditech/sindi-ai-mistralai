@@ -1,22 +1,27 @@
 /**
  * 
  */
-package za.co.sindi.ai.mistral.chat;
+package za.co.sindi.ai.mistral.agents;
 
 import java.util.List;
 
 import jakarta.json.bind.annotation.JsonbProperty;
 import za.co.sindi.ai.mistral.BaseStreamRequest;
+import za.co.sindi.ai.mistral.chat.Message;
+import za.co.sindi.ai.mistral.chat.ResponseFormat;
+import za.co.sindi.ai.mistral.chat.Tool;
+import za.co.sindi.ai.mistral.chat.ToolChoice;
+import za.co.sindi.ai.mistral.chat.ToolChoiceEnum;
 
 /**
  * @author Buhake Sindi
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class ChatCompletionRequest extends BaseStreamRequest {
+public class AgentsCompletionRequest extends BaseStreamRequest {
 
-//	@JsonbProperty
-//	private String model;
+	@JsonbProperty("agent_id")
+	private String agentId;
 	
 	@JsonbProperty
 	private List<Message<?>> messages;
@@ -35,9 +40,6 @@ public class ChatCompletionRequest extends BaseStreamRequest {
 	
 	@JsonbProperty
 	private String[] stop;
-	
-	@JsonbProperty("safe_prompt")
-	private Boolean safePrompt;
 	
 	@JsonbProperty("random_seed")
 	private Integer randomSeed;
@@ -60,19 +62,19 @@ public class ChatCompletionRequest extends BaseStreamRequest {
 	@JsonbProperty
 	private Integer n;
 
-//	/**
-//	 * @return the model
-//	 */
-//	public String getModel() {
-//		return model;
-//	}
-//
-//	/**
-//	 * @param model the model to set
-//	 */
-//	public void setModel(String model) {
-//		this.model = model;
-//	}
+	/**
+	 * @return the agentId
+	 */
+	public String getAgentId() {
+		return agentId;
+	}
+
+	/**
+	 * @param agentId the agentId to set
+	 */
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
+	}
 
 	/**
 	 * @return the messages
@@ -143,20 +145,6 @@ public class ChatCompletionRequest extends BaseStreamRequest {
 //	public void setStream(Boolean stream) {
 //		this.stream = stream;
 //	}
-
-	/**
-	 * @return the safePrompt
-	 */
-	public Boolean getSafePrompt() {
-		return safePrompt;
-	}
-
-	/**
-	 * @param safePrompt the safePrompt to set
-	 */
-	public void setSafePrompt(Boolean safePrompt) {
-		this.safePrompt = safePrompt;
-	}
 
 	/**
 	 * @return the randomSeed

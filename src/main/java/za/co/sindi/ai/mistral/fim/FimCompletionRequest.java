@@ -3,17 +3,15 @@
  */
 package za.co.sindi.ai.mistral.fim;
 
-import java.util.List;
-
 import jakarta.json.bind.annotation.JsonbProperty;
-import za.co.sindi.ai.mistral.BaseRequest;
+import za.co.sindi.ai.mistral.BaseStreamRequest;
 
 /**
  * @author Buhake Sindi
  * @since 01 March 2024
  * @see <a href="https://docs.mistral.ai/api/">Mistral API Docs</a>.
  */
-public class FimCompletionRequest extends BaseRequest {
+public class FimCompletionRequest extends BaseStreamRequest {
 
 	@JsonbProperty
 	private Double temperature;
@@ -24,8 +22,8 @@ public class FimCompletionRequest extends BaseRequest {
 	@JsonbProperty("max_tokens")
 	private Integer maxTokens;
 	
-	@JsonbProperty
-	private Boolean stream;
+//	@JsonbProperty
+//	private Boolean stream;
 	
 	@JsonbProperty
 	private String[] stop;
@@ -84,19 +82,19 @@ public class FimCompletionRequest extends BaseRequest {
 		this.maxTokens = maxTokens;
 	}
 
-	/**
-	 * @return the stream
-	 */
-	public Boolean getStream() {
-		return stream;
-	}
-
-	/**
-	 * @param stream the stream to set
-	 */
-	public void setStream(Boolean stream) {
-		this.stream = stream;
-	}
+//	/**
+//	 * @return the stream
+//	 */
+//	public Boolean getStream() {
+//		return stream;
+//	}
+//
+//	/**
+//	 * @param stream the stream to set
+//	 */
+//	public void setStream(Boolean stream) {
+//		this.stream = stream;
+//	}
 
 	/**
 	 * @return the stop
