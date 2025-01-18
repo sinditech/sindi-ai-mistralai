@@ -21,6 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
+import za.co.sindi.ai.mistral.BaseStreamRequest;
 import za.co.sindi.ai.mistral.JSONObjectTransformer;
 import za.co.sindi.ai.mistral.MistralAIException;
 import za.co.sindi.ai.mistral.ObjectTransformer;
@@ -100,8 +101,9 @@ public class APIClientImpl implements APIClient {
 	}
 	
 	@Override
-	public <REQ, T> Stream<T> sendStreaming(APIRequest<REQ> request, Class<T> chunkClass) throws IOException, InterruptedException {
+	public <REQ extends BaseStreamRequest, T> Stream<T> sendStreaming(APIRequest<REQ> request, Class<T> chunkClass) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
+		request.getContent().setStream(true);
 		SSEEventProcessor processor = new SSEEventProcessor();
 		AllEventSubscriber subscriber = new AllEventSubscriber();
 		processor.subscribe(subscriber);
@@ -113,8 +115,9 @@ public class APIClientImpl implements APIClient {
 	}
 	
 	@Override
-	public <REQ, T> CompletableFuture<Stream<T>> sendStreamingAsync(APIRequest<REQ> request, Class<T> chunkClass) {
+	public <REQ extends BaseStreamRequest, T> CompletableFuture<Stream<T>> sendStreamingAsync(APIRequest<REQ> request, Class<T> chunkClass) {
 		// TODO Auto-generated method stub
+		request.getContent().setStream(true);
 		SSEEventProcessor processor = new SSEEventProcessor();
 		AllEventSubscriber subscriber = new AllEventSubscriber();
 		processor.subscribe(subscriber);
